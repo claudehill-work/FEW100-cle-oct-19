@@ -90,8 +90,8 @@ describe('array literals', () => {
         const numbers = [1, 2, 3, 4];
         const friends: string[] = [];
 
-        numbers[5] = 'tacos';
-        friends[0] = 32;
+        // numbers[5] = 'tacos';
+        // friends[0] = 32;
 
         // array of strings or numbers
         let friendsAndNumbers: string | number[]; // type of array itself is string or number

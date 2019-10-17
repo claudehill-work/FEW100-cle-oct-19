@@ -1,3 +1,5 @@
+import { isEven, doubleIt, accumulate } from './utils';
+
 describe('functions', () => {
     it('how to declare them...', () => {
         // named functions
@@ -149,5 +151,100 @@ describe('functions', () => {
             });
         });
 
-    });
+        describe('array methods', () => {
+            const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
+            // numbers (e i c)
+            it('visiting each element in an array', () => {
+                numbers.forEach((e, i, c) => console.log(e, i, c));
+                numbers.forEach((e) => console.log(e));
+
+            });
+            describe('methods that create a new array', () => {
+                // map
+                it('map', () => {
+                    // const doubled = numbers.map(e => e * 2); // one way
+                    const doubled = numbers.map(doubleIt); // another way ...
+                    expect(doubled).toEqual([2, 4, 6, 8, 10, 12, 14, 16, 18]);
+                });
+            });
+
+            it('filter', () => {
+                // predicate function, t/f
+                // const evens = numbers.filter(n => n % 2 === 0);
+                // const evens = numbers.filter(n => isEven(n)); // one way
+                const evens = numbers.filter(isEven); // better way, function becomes iterator
+                expect(evens).toEqual([2, 4, 6, 8]);
+            });
+            describe('methods that return a single value', () => {
+                describe('checking the membership', () => {
+                    it('seeing if all the members meet a criteria', () => {
+                        const allEven = numbers.every(isEven);
+                        expect(allEven).toBe(false); // some are ODD!!
+
+                        const someEven = numbers.some(isEven);
+                        expect(someEven).toBe(true); // yes, SOME are even ...
+                    });
+                    it('has reduce', () => {
+                        const total = numbers.reduce((s, n) => s + n);
+                        expect(total).toBe(45);
+
+                        const total2 = numbers.reduce((s, n) => s + n, 100);
+                        expect(total2).toBe(145);
+
+                        const total3 = numbers.reduce(accumulate);
+                        expect(total3).toBe(45);
+
+                        const totalOfDoubledEvens =
+                            numbers
+                                .filter(isEven)
+                                .map(doubleIt)
+                                .reduce((s, n) => s + n);
+                        expect(totalOfDoubledEvens).toBe(40);
+
+                    });
+
+                    it('practice', () => {
+                        interface CartItem {
+                            name: string;
+                            qty: number;
+                            price: number;
+                        }
+
+                        const cart: CartItem[] = [
+                            { name: 'Eggs', qty: 1, price: 2.99 },
+                            { name: 'Bread', qty: 3, price: 3.50 },
+                            { name: 'Shampoo', qty: 2, price: 7.25 }
+                        ];
+
+                        interface ShippingInfo {
+                            totalQty: number;
+                            totalPrice: number;
+                        }
+
+                        // how would we use reduce to get the shipping info from
+                        // this cart. (the total number of things, the total price.)
+                        const initialState: ShippingInfo = {
+                            totalQty: 0,
+                            totalPrice: 0
+                        };
+
+                        // s is state, n is next or action
+                        const answer = cart.reduce((s: ShippingInfo, n: CartItem): ShippingInfo => {
+                            return {
+                                totalQty: s.totalQty + n.qty , // state item
+                                totalPrice: s.totalPrice + ( n.qty * n.price ) // cart item qty price
+                            } as ShippingInfo;
+                        }, initialState); // start with initial state
+
+                        console.log('*** THE ANSWER IS *** ', answer);
+
+                    });
+                });
+            });
+        });
+
+
+
+    });
+});
