@@ -37,7 +37,29 @@ describe('classes', () => {
             const newMovie = { ...movie, yearReleased: 1977 };
 
             expect(newMovie.yearReleased).toBe(1977);
+            expect(movie.yearReleased).toBe(1978);
+        });
+        it('array destructuring', () => {
 
+            // const first = numbers[0];
+            // const third = numbers[2];
+
+            const [first, , third] = numbers;  // much cooler way!!!
+
+            expect(first).toBe(1);
+            expect(third).toBe(3);
+        });
+
+        it('object destructuring', () => {
+            const movie = { title: 'Episode IV: A New Hope', yearReleased: 1977 };
+
+            // const title = movie.title;  // --- THIS WORKS
+            // const year = movie.yearReleased;
+
+            const { title, yearReleased: year } = movie; // --- MUCH COOLER
+
+            expect(title).toBe('Episode IV: A New Hope');
+            expect(year).toBe(1977);
 
         });
     });
